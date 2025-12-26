@@ -199,10 +199,10 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTest)
 
     float f{ 0.0f };
     int loopCount2{ Size };
-    for(auto f : fftSpan)
+    for(auto ff : fftSpan)
     {
         loopCount2--;
-        EXPECT_EQ(f, f);
+        EXPECT_EQ(ff, f);
         f += 1.0f;
     }
     EXPECT_EQ(loopCount2, 0);
