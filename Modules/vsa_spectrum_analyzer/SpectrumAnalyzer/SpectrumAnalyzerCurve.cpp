@@ -41,7 +41,7 @@ static float getParameterValueFromFrequency(const float frequency)
 
     const float num = std::log(frequency - MinFrequency);
     const float den = std::log(MaxFrequency - MinFrequency);
-    return std::powf(num / den, 2.0f);
+    return std::pow(num / den, 2.0f);
 }
 
 //-----------------------------------------------------------------------------
