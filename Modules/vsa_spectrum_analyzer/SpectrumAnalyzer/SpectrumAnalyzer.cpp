@@ -2,51 +2,35 @@
 
 //-----------------------------------------------------------------------------
 
-class vsa::SpectrumAnalyzer::SpectrumAnalyzerTimeSliceThread : public juce::TimeSliceThread
-{
-public:
-    SpectrumAnalyzerTimeSliceThread() : juce::TimeSliceThread("fft") { startThread(); }
-    ~SpectrumAnalyzerTimeSliceThread() override { stopThread(100); }
-};
-
-//-----------------------------------------------------------------------------
-
 void vsa::SpectrumAnalyzer::init()
 {
     const int fftSize = m_fft.getSize() * 2;
     const int stepSize = fftSize / static_cast<int>(m_buffers.size());
-    for(const auto &[index, buffer] : juce::enumerate(m_buffers))
+    for (const auto &[index, buffer] : juce::enumerate(m_buffers))
     {
         buffer.setSize(static_cast<std::size_t>(fftSize));
         const int writeSize = stepSize * static_cast<int>(index);
         if (writeSize != 0)
             buffer.skip(writeSize);
     }
-
-    m_thread->addTimeSliceClient(this);
 }
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<float> &source)
+vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<float> &source, juce::TimeSliceThread &thread)
     : m_audioFifoFloat(&source)
 {
+    thread.addTimeSliceClient(this);
     init();
 }
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<double> &source)
+vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<double> &source, juce::TimeSliceThread &thread)
     : m_audioFifoDouble(&source)
 {
+    thread.addTimeSliceClient(this);
     init();
-}
-
-//-----------------------------------------------------------------------------
-
-vsa::SpectrumAnalyzer::~SpectrumAnalyzer()
-{
-    m_thread->removeTimeSliceClient(this);
 }
 
 //-----------------------------------------------------------------------------
@@ -55,7 +39,7 @@ int vsa::SpectrumAnalyzer::useTimeSlice()
 {
     if (populateConduitBuffer())
     {
-        for(auto &b : m_buffers)
+        for (auto &b : m_buffers)
         {
             b.write(m_conduitBuffer);
 
@@ -63,7 +47,8 @@ int vsa::SpectrumAnalyzer::useTimeSlice()
             {
                 auto fftSpan{ b.getFftSpan() };
 
-                m_windowingFunction.multiplyWithWindowingTable(fftSpan.data(), std::min(fftSpan.size(), static_cast<std::size_t>(m_fft.getSize())));
+                m_windowingFunction.multiplyWithWindowingTable(
+                    fftSpan.data(), std::min(fftSpan.size(), static_cast<std::size_t>(m_fft.getSize())));
                 m_fft.performFrequencyOnlyForwardTransform(fftSpan.data());
 
                 m_analyzerCurve.pushCurve(fftSpan);
@@ -75,21 +60,6 @@ int vsa::SpectrumAnalyzer::useTimeSlice()
 }
 
 //-----------------------------------------------------------------------------
-
-void vsa::SpectrumAnalyzer::startThread()
-{
-    m_thread->startThread();
-}
-
-//-----------------------------------------------------------------------------
-
-void vsa::SpectrumAnalyzer::suspendThread()
-{
-    m_thread->stopThread(100);
-}
-
-//-----------------------------------------------------------------------------
-
 bool vsa::SpectrumAnalyzer::populateConduitBuffer()
 {
     if (m_audioFifoFloat && m_audioFifoFloat->getAvailableSamples() > 0)
@@ -128,7 +98,8 @@ bool vsa::SpectrumAnalyzer::populateConduitBuffer()
 
 vsa::SpectrumAnalyzerCurve::LockedCurve vsa::SpectrumAnalyzer::getAnalyzerCurve()
 {
-    m_analyzerCurve.setSampleRate(m_audioFifoFloat ? m_audioFifoFloat->getSampleRate() : m_audioFifoDouble->getSampleRate());
+    m_analyzerCurve.setSampleRate(m_audioFifoFloat ? m_audioFifoFloat->getSampleRate()
+                                                   : m_audioFifoDouble->getSampleRate());
 
     return m_analyzerCurve.getCurve();
 }

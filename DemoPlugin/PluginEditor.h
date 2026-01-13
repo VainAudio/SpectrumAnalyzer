@@ -17,8 +17,8 @@ public:
     void resized() override;
 
 private:
+    juce::TimeSliceThread m_thread;
     vsa::SpectrumAnalyzerComponent m_analyzer;
 };
 
 //-------------------------------------------------------------------------------------------------------
-

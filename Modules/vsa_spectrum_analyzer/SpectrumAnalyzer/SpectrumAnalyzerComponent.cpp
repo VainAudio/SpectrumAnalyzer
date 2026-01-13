@@ -3,15 +3,16 @@
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<float> &source)
-    : m_fft(source)
+vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread)
+    : m_fft(source, thread)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<double>& source)
-    : m_fft(source)
+vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<double> &source,
+                                                          juce::TimeSliceThread &thread)
+    : m_fft(source, thread)
 {
 }
 
@@ -41,14 +42,8 @@ float vsa::SpectrumAnalyzerComponent::getPreSmoothingPathHeightMultiplier(float 
 
 void vsa::SpectrumAnalyzerComponent::paintAnalyzerCurve(juce::Graphics &g, const juce::Path &p)
 {
-    const auto gradient{
-        juce::ColourGradient::vertical(
-            juce::Colours::red,
-            0.0f,
-            juce::Colours::red.withAlpha(0.25f),
-            static_cast<float>(getHeight())
-        )
-    };
+    const auto gradient{ juce::ColourGradient::vertical(juce::Colours::red, 0.0f, juce::Colours::red.withAlpha(0.25f),
+                                                        static_cast<float>(getHeight())) };
     g.setGradientFill(gradient);
 
     g.fillPath(p);
