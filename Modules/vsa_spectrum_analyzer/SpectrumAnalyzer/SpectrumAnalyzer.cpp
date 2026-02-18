@@ -17,8 +17,9 @@ void vsa::SpectrumAnalyzer::init()
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<float> &source, juce::TimeSliceThread &thread)
+vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<float> &source, juce::TimeSliceThread &thread, int fftSize)
     : m_audioFifoFloat(&source)
+    , m_fft(fftSize)
 {
     thread.addTimeSliceClient(this);
     init();
@@ -26,8 +27,9 @@ vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<float> &source, juc
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<double> &source, juce::TimeSliceThread &thread)
+vsa::SpectrumAnalyzer::SpectrumAnalyzer(vsa::AudioBufferFifo<double> &source, juce::TimeSliceThread &thread, int fftSize)
     : m_audioFifoDouble(&source)
+    , m_fft(fftSize)
 {
     thread.addTimeSliceClient(this);
     init();

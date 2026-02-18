@@ -22,8 +22,8 @@ class SpectrumAnalyzerComponent
     , public juce::Timer
 {
 public:
-    explicit SpectrumAnalyzerComponent(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread);
-    explicit SpectrumAnalyzerComponent(AudioBufferFifo<double> &source, juce::TimeSliceThread &thread);
+    explicit SpectrumAnalyzerComponent(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread, int fftSize = 11);
+    explicit SpectrumAnalyzerComponent(AudioBufferFifo<double> &source, juce::TimeSliceThread &thread, int fftSize = 11);
     ~SpectrumAnalyzerComponent() override;
 
     void paint(juce::Graphics &g) override;

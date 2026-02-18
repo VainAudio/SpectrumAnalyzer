@@ -3,16 +3,15 @@
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread)
-    : m_fft(source, thread)
+vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread, int fftSize)
+    : m_fft(source, thread, fftSize)
 {
 }
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<double> &source,
-                                                          juce::TimeSliceThread &thread)
-    : m_fft(source, thread)
+vsa::SpectrumAnalyzerComponent::SpectrumAnalyzerComponent(AudioBufferFifo<double> &source, juce::TimeSliceThread &thread, int fftSize)
+    : m_fft(source, thread, fftSize)
 {
 }
 
