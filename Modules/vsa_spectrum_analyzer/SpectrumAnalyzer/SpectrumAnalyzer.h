@@ -22,8 +22,8 @@ class SpectrumAnalyzer : public juce::TimeSliceClient
     class SpectrumAnalyzerTimeSliceThread;
 
 public:
-    explicit SpectrumAnalyzer(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread);
-    explicit SpectrumAnalyzer(AudioBufferFifo<double> &source, juce::TimeSliceThread &thread);
+    explicit SpectrumAnalyzer(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread, int fftSize = 11);
+    explicit SpectrumAnalyzer(AudioBufferFifo<double> &source, juce::TimeSliceThread &thread, int fftSize = 11);
     ~SpectrumAnalyzer() override = default;
 
     SpectrumAnalyzerCurve::LockedCurve getAnalyzerCurve();
@@ -43,7 +43,7 @@ private:
 
     std::array<SpectrumAnalyzerBuffer, 5> m_buffers;
 
-    juce::dsp::FFT m_fft{ 11 };
+    juce::dsp::FFT m_fft;
     juce::dsp::WindowingFunction<float> m_windowingFunction{ static_cast<std::size_t>(m_fft.getSize()),
                                                              juce::dsp::WindowingFunction<float>::hann, true };
 
