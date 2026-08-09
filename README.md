@@ -20,3 +20,22 @@ m_fifo.pushAudioData(buffer); // push all audio data into the fifo
 vsa::SpectrumAnalyzerComponent spectrumAnalyzer{ fifo };
 addAndMakeVisible(spectrumAnalyzer);
 ```
+
+# Adding it to Your Project
+
+SpectrumAnalyzer is organized as a JUCE module.
+To use it in your project include the `Modules` directory in `CMakeLists.txt`:
+
+```cmake
+add_subdirectory("SpectrumAnalyzer/Modules")
+```
+
+Link to the following targets:
+
+```cmake
+target_link_libraries("Project"
+    PRIVATE
+    vsa::vsa
+    vsa::vsa_spectrum_analyzer
+)
+```
