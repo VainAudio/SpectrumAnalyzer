@@ -16,14 +16,14 @@ BEGIN_VSA_NAMESPACE
  * @brief Display a spectrum analyzer from data grabbed from AudioBufferFifo
  *
  * @see AudioBufferFifo
-*/
+ */
 class SpectrumAnalyzerComponent
     : public juce::Component
     , public juce::Timer
 {
 public:
-    explicit SpectrumAnalyzerComponent(AudioBufferFifo<float> &source);
-    explicit SpectrumAnalyzerComponent(AudioBufferFifo<double> &source);
+    explicit SpectrumAnalyzerComponent(AudioBufferFifo<float> &source, juce::TimeSliceThread &thread, int fftSize = 11);
+    explicit SpectrumAnalyzerComponent(AudioBufferFifo<double> &source, juce::TimeSliceThread &thread, int fftSize = 11);
     ~SpectrumAnalyzerComponent() override;
 
     void paint(juce::Graphics &g) override;

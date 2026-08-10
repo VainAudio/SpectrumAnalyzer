@@ -11,6 +11,13 @@ FetchContent_MakeAvailable(gtest)
 
 add_executable(Tests Tests.cpp)
 
+target_compile_definitions(
+		Tests
+		PUBLIC
+		JUCE_WEB_BROWSER=0
+		JUCE_USE_CURL=0
+)
+
 target_link_libraries(
 		Tests
 

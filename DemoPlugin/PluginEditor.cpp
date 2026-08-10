@@ -2,10 +2,13 @@
 
 //-------------------------------------------------------------------------------------------------------
 
-SpectrumAnalyzerAudioProcessorEditor::SpectrumAnalyzerAudioProcessorEditor(juce::AudioProcessor &p, vsa::AudioBufferFifo<float> &source)
+SpectrumAnalyzerAudioProcessorEditor::SpectrumAnalyzerAudioProcessorEditor(juce::AudioProcessor &p,
+                                                                           vsa::AudioBufferFifo<float> &source)
     : juce::AudioProcessorEditor(p)
-    , m_analyzer(source)
+    , m_thread("fft")
+    , m_analyzer(source, m_thread)
 {
+    m_thread.startThread();
     setSize(1000, 400);
     addAndMakeVisible(m_analyzer);
     m_analyzer.startTimerHz(60);
@@ -13,7 +16,11 @@ SpectrumAnalyzerAudioProcessorEditor::SpectrumAnalyzerAudioProcessorEditor(juce:
 
 //-------------------------------------------------------------------------------------------------------
 
-SpectrumAnalyzerAudioProcessorEditor::~SpectrumAnalyzerAudioProcessorEditor() = default;
+SpectrumAnalyzerAudioProcessorEditor::~SpectrumAnalyzerAudioProcessorEditor()
+{
+    m_thread.removeAllClients();
+    m_thread.stopThread(100);
+}
 
 //-------------------------------------------------------------------------------------------------------
 
