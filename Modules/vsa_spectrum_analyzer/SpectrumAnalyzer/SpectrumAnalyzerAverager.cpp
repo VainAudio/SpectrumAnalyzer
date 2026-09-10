@@ -27,12 +27,13 @@ std::span<const float> vsa::SpectrumAnalyzerAverager::getReadSpan()
 {
     m_outputBuffer.clear();
 
-    for(int c = 0; c < m_averagerBuffer.getNumChannels(); ++c)
+    for (int c = 0; c < m_averagerBuffer.getNumChannels(); ++c)
     {
         m_outputBuffer.addFrom(0, 0, m_averagerBuffer, c, 0, m_averagerBuffer.getNumSamples(), 2.0f);
     }
 
-    juce::FloatVectorOperations::multiply(m_outputBuffer.getWritePointer(0), 1.0f / static_cast<float>(m_averagerBuffer.getNumChannels()), m_outputBuffer.getNumSamples());
+    juce::FloatVectorOperations::multiply(m_outputBuffer.getWritePointer(0), 1.0f / static_cast<float>(m_averagerBuffer.getNumChannels()),
+                                          m_outputBuffer.getNumSamples());
 
     return { m_outputBuffer.getReadPointer(0), static_cast<std::size_t>(m_outputBuffer.getNumSamples()) };
 }

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vsa/vsa.h>
 #include <juce_dsp/juce_dsp.h>
+#include <vsa/vsa.h>
 
 //-----------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ BEGIN_VSA_NAMESPACE
  *
  * basically the same thing as a juce::SmoothedValue but with some specific
  * behavior that makes it look nicer in the spectrum analyzer
-*/
+ */
 class SpectrumAnalyzerBinSmoother
 {
 public:

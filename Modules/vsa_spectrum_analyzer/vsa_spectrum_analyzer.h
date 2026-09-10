@@ -13,7 +13,7 @@
 
     END_JUCE_MODULE_DECLARATION
  */
- 
+
 #pragma once
 
 #include <vsa_spectrum_analyzer/SpectrumAnalyzer/SpectrumAnalyzer.h>

@@ -9,9 +9,9 @@
 
 inline void fillBuffer(juce::AudioBuffer<float> &b, const float f)
 {
-    for(int c = 0; c < b.getNumChannels(); ++c)
+    for (int c = 0; c < b.getNumChannels(); ++c)
     {
-        for(int s = 0; s < b.getNumSamples(); ++s)
+        for (int s = 0; s < b.getNumSamples(); ++s)
         {
             b.getWritePointer(c)[s] = f;
         }
@@ -51,8 +51,6 @@ public:
     juce::AudioBuffer<float> inputBuffer;
     vsa::AudioBufferFifo<float> fifo;
     std::span<float> outputBuffer;
-
-
 };
 
 //-----------------------------------------------------------------------------
@@ -64,7 +62,7 @@ TEST(SpectrumAnalyzerTests, AudioBufferFifoCorrectValidityTest)
 
     AbfHelper h{ NumSamples, Scale };
 
-    for(int i = 0; i < NumSamples; ++i)
+    for (int i = 0; i < NumSamples; ++i)
     {
         h.inputBuffer.getWritePointer(0)[i] = static_cast<float>(i);
         h.inputBuffer.getWritePointer(1)[i] = static_cast<float>(i);
@@ -74,7 +72,7 @@ TEST(SpectrumAnalyzerTests, AudioBufferFifoCorrectValidityTest)
     EXPECT_EQ(h.fifo.getAvailableSamples(), NumSamples);
     h.fifo.popAudioData(h.outputBuffer);
 
-    for(std::size_t i = 0; i < static_cast<std::size_t>(NumSamples); ++i)
+    for (std::size_t i = 0; i < static_cast<std::size_t>(NumSamples); ++i)
     {
         EXPECT_EQ(h.inputBuffer.getReadPointer(0)[i], h.outputBuffer[i]);
     }
@@ -99,7 +97,7 @@ TEST(SpectrumAnalyzerTests, AudioBufferFifoTearTest)
 
     h.fifo.popAudioData(h.outputBuffer);
 
-    for(const auto &f : h.getOutputBuffer(60))
+    for (const auto &f : h.getOutputBuffer(60))
         EXPECT_EQ(f, 1.0f);
 
     // inserting another 60 samples should fill the last 40% and wrap to the first 20% of the fifo
@@ -110,7 +108,7 @@ TEST(SpectrumAnalyzerTests, AudioBufferFifoTearTest)
 
     h.fifo.popAudioData(h.outputBuffer);
 
-    for(const auto &f : h.getOutputBuffer(60))
+    for (const auto &f : h.getOutputBuffer(60))
         EXPECT_EQ(f, 2.0f);
 }
 
@@ -129,7 +127,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferBasicTest)
     EXPECT_TRUE(b.isFftSpanReady());
 
     auto fftSpan{ b.getFftSpan() };
-    for(std::size_t i = 0 ; i < 10; ++i)
+    for (std::size_t i = 0; i < 10; ++i)
     {
         EXPECT_EQ(fftSpan[i], v[i % v.size()]);
     }
@@ -153,7 +151,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferLoopTest)
         const std::vector<float> expect{ 0.0f, 1.0f, 2.0f, 3.0f, 0.0f };
 
         auto fftSpan{ b.getFftSpan() };
-        for(const auto [i, f] : juce::enumerate(expect))
+        for (const auto [i, f] : juce::enumerate(expect))
         {
             EXPECT_EQ(fftSpan[static_cast<std::size_t>(i)], f);
         }
@@ -167,7 +165,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferLoopTest)
         const std::vector<float> expect{ 1.0f, 2.0f, 3.0f, 0.0f, 0.0f };
 
         auto fftSpan{ b.getFftSpan() };
-        for(const auto [i, f] : juce::enumerate(expect))
+        for (const auto [i, f] : juce::enumerate(expect))
         {
             EXPECT_EQ(fftSpan[static_cast<std::size_t>(i)], f);
         }
@@ -186,7 +184,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTest)
     float asdf{ 0.0f };
     std::vector<float> v;
 
-    for(int i = 0; i < Size; ++i)
+    for (int i = 0; i < Size; ++i)
     {
         v.push_back(asdf);
         asdf += 1.0f;
@@ -199,7 +197,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTest)
 
     float f{ 0.0f };
     int loopCount2{ Size };
-    for(auto ff : fftSpan)
+    for (auto ff : fftSpan)
     {
         loopCount2--;
         EXPECT_EQ(ff, f);
@@ -209,7 +207,6 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTest)
 }
 
 //-----------------------------------------------------------------------------
-
 
 TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTearTest)
 {
@@ -222,7 +219,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTearTest)
 
     std::vector<float> asdf;
 
-    for(int i = 0; i < Size; ++i)
+    for (int i = 0; i < Size; ++i)
         asdf.push_back(static_cast<float>(i));
 
     b.write(asdf);
@@ -233,7 +230,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTearTest)
 
     float value{ 0.0f };
 
-    for(auto f : endSpan)
+    for (auto f : endSpan)
     {
         EXPECT_EQ(value, f);
         value += 1.0f;
@@ -249,7 +246,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTearTest)
 
     auto r2{ b.getFftSpan() };
     std::span<const float> beginSpan = { r2.begin(), r2.begin() + Size / 2 };
-    for(auto f : beginSpan)
+    for (auto f : beginSpan)
     {
         EXPECT_EQ(value, f);
         value += 1.0f;
@@ -257,7 +254,6 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferTearTest)
 }
 
 //-----------------------------------------------------------------------------
-
 
 TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferWriteFromFifoTest)
 {
@@ -278,7 +274,7 @@ TEST(SpectrumAnalyzerTests, SpectrumAnalyzerBufferWriteFromFifoTest)
     fifo.popAudioData(v);
     b.write(v);
 
-    for(auto f : b.getFftSpan())
+    for (auto f : b.getFftSpan())
         EXPECT_EQ(f, 1.0f);
 }
 

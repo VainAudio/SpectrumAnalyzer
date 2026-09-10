@@ -5,7 +5,7 @@
 void vsa::SpectrumAnalyzerBinSmoother::setTargetValue(const float target)
 {
     m_target = target;
-    if(target > m_current)
+    if (target > m_current)
     {
         m_current = target;
         m_mul = MultiplierInit;
@@ -16,7 +16,7 @@ void vsa::SpectrumAnalyzerBinSmoother::setTargetValue(const float target)
 
 float vsa::SpectrumAnalyzerBinSmoother::getNextValue()
 {
-    if(m_target < m_current)
+    if (m_target < m_current)
     {
         m_mul += m_mul;
         m_current -= m_mul;
