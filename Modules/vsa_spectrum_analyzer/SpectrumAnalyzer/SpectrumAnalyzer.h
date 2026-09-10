@@ -2,11 +2,11 @@
 
 //-----------------------------------------------------------------------------
 
-#include <vsa/vsa.h>
-#include <juce_dsp/juce_dsp.h>
 #include "AudioBufferFifo.h"
 #include "SpectrumAnalyzerBuffer.h"
 #include "SpectrumAnalyzerCurve.h"
+#include <juce_dsp/juce_dsp.h>
+#include <vsa/vsa.h>
 
 //-----------------------------------------------------------------------------
 

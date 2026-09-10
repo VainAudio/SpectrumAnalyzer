@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vsa/vsa.h>
 #include <juce_dsp/juce_dsp.h>
 #include <span>
+#include <vsa/vsa.h>
 
 //-----------------------------------------------------------------------------
 
@@ -17,13 +17,13 @@ BEGIN_VSA_NAMESPACE
  * and receives new audio data from AudioBufferFifo
  *
  * @see AudioBufferFifo
-*/
+ */
 class SpectrumAnalyzerBuffer
 {
 public:
     SpectrumAnalyzerBuffer();
 
-    void setSize(const std::size_t& size);
+    void setSize(const std::size_t &size);
     int getSize() const;
 
     using FftSpan = std::span<float>;

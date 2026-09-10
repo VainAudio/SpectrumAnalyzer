@@ -49,8 +49,8 @@ int vsa::SpectrumAnalyzer::useTimeSlice()
             {
                 auto fftSpan{ b.getFftSpan() };
 
-                m_windowingFunction.multiplyWithWindowingTable(
-                    fftSpan.data(), std::min(fftSpan.size(), static_cast<std::size_t>(m_fft.getSize())));
+                m_windowingFunction.multiplyWithWindowingTable(fftSpan.data(),
+                                                               std::min(fftSpan.size(), static_cast<std::size_t>(m_fft.getSize())));
                 m_fft.performFrequencyOnlyForwardTransform(fftSpan.data());
 
                 m_analyzerCurve.pushCurve(fftSpan);
@@ -100,8 +100,7 @@ bool vsa::SpectrumAnalyzer::populateConduitBuffer()
 
 vsa::SpectrumAnalyzerCurve::LockedCurve vsa::SpectrumAnalyzer::getAnalyzerCurve()
 {
-    m_analyzerCurve.setSampleRate(m_audioFifoFloat ? m_audioFifoFloat->getSampleRate()
-                                                   : m_audioFifoDouble->getSampleRate());
+    m_analyzerCurve.setSampleRate(m_audioFifoFloat ? m_audioFifoFloat->getSampleRate() : m_audioFifoDouble->getSampleRate());
 
     return m_analyzerCurve.getCurve();
 }

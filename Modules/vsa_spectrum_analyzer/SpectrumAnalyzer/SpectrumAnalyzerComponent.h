@@ -2,9 +2,9 @@
 
 //-----------------------------------------------------------------------------
 
-#include <vsa/vsa.h>
-#include <juce_gui_basics/juce_gui_basics.h>
 #include "SpectrumAnalyzer.h"
+#include <juce_gui_basics/juce_gui_basics.h>
+#include <vsa/vsa.h>
 
 //-----------------------------------------------------------------------------
 

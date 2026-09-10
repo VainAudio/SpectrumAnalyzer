@@ -69,14 +69,14 @@ void vsa::SpectrumAnalyzerCurve::generateCurve()
 
     const std::span<const float> averagerSpan{ m_averager.getReadSpan() };
 
-    if(m_smoother.size() != averagerSpan.size())
+    if (m_smoother.size() != averagerSpan.size())
     {
         m_smoother.clear();
         m_smoother.assign(averagerSpan.size(), {});
     }
 
     m_curvePoints.clear();
-    for(const auto [index, level] : juce::enumerate(averagerSpan))
+    for (const auto [index, level] : juce::enumerate(averagerSpan))
     {
         const auto i{ static_cast<std::size_t>(index) };
         m_smoother[i].setTargetValue(binToY(level));

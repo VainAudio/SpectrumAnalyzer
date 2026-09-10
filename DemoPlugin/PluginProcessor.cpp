@@ -12,8 +12,8 @@ juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 
 SpectrumAnalyzerAudioProcessor::SpectrumAnalyzerAudioProcessor()
     : juce::AudioProcessor(juce::AudioProcessor::BusesProperties{}
-                           .withInput("Input", juce::AudioChannelSet::stereo(), true)
-                           .withOutput("Output", juce::AudioChannelSet::stereo(), true))
+                               .withInput("Input", juce::AudioChannelSet::stereo(), true)
+                               .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
 }
 

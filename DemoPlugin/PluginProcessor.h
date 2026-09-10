@@ -20,7 +20,7 @@ public:
     double getTailLengthSeconds() const override;
     bool acceptsMidi() const override;
     bool producesMidi() const override;
-    juce::AudioProcessorEditor * createEditor() override;
+    juce::AudioProcessorEditor *createEditor() override;
     bool hasEditor() const override;
     int getNumPrograms() override;
     int getCurrentProgram() override;

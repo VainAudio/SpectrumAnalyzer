@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vsa/vsa.h>
 #include <juce_dsp/juce_dsp.h>
 #include <span>
+#include <vsa/vsa.h>
 
 //-----------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ BEGIN_VSA_NAMESPACE
  * @brief calculate the average over the last n buffers (n = 5 currently)
  *
  * getReadSpan() runs the average
-*/
+ */
 class SpectrumAnalyzerAverager
 {
 public:

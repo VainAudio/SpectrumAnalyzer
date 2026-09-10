@@ -1,11 +1,11 @@
 #pragma once
 
-#include <vsa/vsa.h>
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_dsp/juce_dsp.h>
-#include <span>
 #include "SpectrumAnalyzerAverager.h"
 #include "SpectrumAnalyzerBinSmoother.h"
+#include <juce_dsp/juce_dsp.h>
+#include <juce_gui_basics/juce_gui_basics.h>
+#include <span>
+#include <vsa/vsa.h>
 
 //-----------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ BEGIN_VSA_NAMESPACE
  * @brief thread safe class for storing fft curve
  *
  * push raw fft in, get a smooth curve out
-*/
+ */
 class SpectrumAnalyzerCurve
 {
 public:
@@ -39,7 +39,8 @@ public:
         LockedCurve(std::span<const PointType> &&span, std::mutex &mutex)
             : std::span<const PointType>{ span }
             , m_guard{ mutex }
-        {}
+        {
+        }
 
         std::lock_guard<std::mutex> m_guard;
     };

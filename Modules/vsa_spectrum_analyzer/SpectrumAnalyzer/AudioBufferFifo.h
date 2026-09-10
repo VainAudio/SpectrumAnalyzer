@@ -4,6 +4,7 @@
 
 #include <juce_dsp/juce_dsp.h>
 #include <span>
+#include <vsa/vsa.h>
 
 //--------------------------------------------------------------------------------
 
@@ -20,9 +21,8 @@ BEGIN_VSA_NAMESPACE
  * a lock ensures the vector cannot be resized while audio is being read.
  * it does note exist while audio is being written - writing and resizing should
  * happen only on the same thread.
-*/
-template<typename SampleType>
-class AudioBufferFifo
+ */
+template <typename SampleType> class AudioBufferFifo
 {
 public:
     AudioBufferFifo() = default;
@@ -43,18 +43,18 @@ public:
 
         const juce::AbstractFifo::ScopedWrite write{ m_abstractFifo, buffer.getNumSamples() };
 
-        if(write.blockSize1 > 0)
+        if (write.blockSize1 > 0)
         {
-            const SampleType * const dataRead{ buffer.getReadPointer(0) };
+            const SampleType *const dataRead{ buffer.getReadPointer(0) };
             const std::span<const SampleType> inSpan{ dataRead, dataRead + write.blockSize1 };
 
             const auto outBegin{ m_audioFifo.begin() + write.startIndex1 };
             std::ranges::copy(inSpan, outBegin);
         }
 
-        if(write.blockSize2 > 0)
+        if (write.blockSize2 > 0)
         {
-            const SampleType * const dataRead{ buffer.getReadPointer(0) + write.blockSize1 };
+            const SampleType *const dataRead{ buffer.getReadPointer(0) + write.blockSize1 };
             const std::span<const SampleType> inSpan{ dataRead, dataRead + write.blockSize2 };
 
             const auto outBegin{ m_audioFifo.begin() + write.startIndex2 };
@@ -65,7 +65,7 @@ public:
     void pushSample(const SampleType &sample)
     {
         juce::AbstractFifo::ScopedWrite write{ m_abstractFifo, 1 };
-        if(write.blockSize1 > 0)
+        if (write.blockSize1 > 0)
             m_audioFifo[static_cast<std::size_t>(write.startIndex1)] = sample;
 
         jassert(write.blockSize2 == 0);
@@ -77,18 +77,18 @@ public:
 
         const juce::AbstractFifo::ScopedRead read{ m_abstractFifo, static_cast<int>(dest.size()) };
 
-        if(read.blockSize1 > 0)
+        if (read.blockSize1 > 0)
         {
             std::span<SampleType> readSpan{ m_audioFifo.begin() + read.startIndex1,
-                                       m_audioFifo.begin() + read.startIndex1 + read.blockSize1 };
+                                            m_audioFifo.begin() + read.startIndex1 + read.blockSize1 };
 
             std::ranges::copy(readSpan, dest.begin());
         }
 
-        if(read.blockSize2 > 0)
+        if (read.blockSize2 > 0)
         {
             std::span<SampleType> readSpan{ m_audioFifo.begin() + read.startIndex2,
-                                       m_audioFifo.begin() + read.startIndex2 + read.blockSize2 };
+                                            m_audioFifo.begin() + read.startIndex2 + read.blockSize2 };
 
             std::ranges::copy(readSpan, dest.begin() + read.blockSize1);
         }

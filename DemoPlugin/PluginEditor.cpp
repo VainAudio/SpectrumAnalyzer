@@ -2,8 +2,7 @@
 
 //-------------------------------------------------------------------------------------------------------
 
-SpectrumAnalyzerAudioProcessorEditor::SpectrumAnalyzerAudioProcessorEditor(juce::AudioProcessor &p,
-                                                                           vsa::AudioBufferFifo<float> &source)
+SpectrumAnalyzerAudioProcessorEditor::SpectrumAnalyzerAudioProcessorEditor(juce::AudioProcessor &p, vsa::AudioBufferFifo<float> &source)
     : juce::AudioProcessorEditor(p)
     , m_thread("fft")
     , m_analyzer(source, m_thread)

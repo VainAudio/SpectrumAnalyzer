@@ -13,7 +13,7 @@ void vsa::SpectrumAnalyzerBuffer::write(const std::span<const float> data)
 
     const auto oldWriteIndex = static_cast<int>(getWriteIndex());
 
-    if(isTornWrite)
+    if (isTornWrite)
     {
         const auto aBegin{ m_writeBuffer.begin() + oldWriteIndex };
         const auto aEnd{ m_writeBuffer.end() };
@@ -74,7 +74,7 @@ void vsa::SpectrumAnalyzerBuffer::addToWriteIndex(int n)
 
     m_writeIndex += static_cast<std::size_t>(n);
 
-    if(m_writeIndex >= size)
+    if (m_writeIndex >= size)
     {
         m_writeIndex %= size;
         std::swap(m_writeBuffer, m_fftBuffer);
@@ -93,7 +93,7 @@ vsa::SpectrumAnalyzerBuffer::FftSpan vsa::SpectrumAnalyzerBuffer::getFftSpan()
 
 //-----------------------------------------------------------------------------
 
-void vsa::SpectrumAnalyzerBuffer::setSize(const std::size_t& size)
+void vsa::SpectrumAnalyzerBuffer::setSize(const std::size_t &size)
 {
     m_writeBuffer.clear();
     m_writeBuffer.assign(size, 0.0f);

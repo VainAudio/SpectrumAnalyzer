@@ -4,7 +4,7 @@
 BasedOnStyle: LLVM
 
 # Set the column limit (maximum line width).
-ColumnLimit: 120
+ColumnLimit: 140
 
 # Indentation width (number of spaces for each level of indentation).
 TabWidth: 4

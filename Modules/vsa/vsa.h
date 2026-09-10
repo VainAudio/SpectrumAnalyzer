@@ -10,13 +10,12 @@
     license:            MIT
     minimumCppStandard: 20
     dependencies:
-
     END_JUCE_MODULE_DECLARATION
  */
 
 #pragma once
 
-#define BEGIN_VSA_NAMESPACE \
-    namespace vsa           \
+#define BEGIN_VSA_NAMESPACE                                                                                                                \
+    namespace vsa                                                                                                                          \
     {
 #define END_VSA_NAMESPACE } // vsa
