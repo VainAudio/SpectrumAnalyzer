@@ -11,14 +11,15 @@ BEGIN_VSA_NAMESPACE
 //-----------------------------------------------------------------------------
 /**
  * @class SpectrumAnalyzerAverager
- * @brief calculate the average over the last n buffers (n = 5 currently)
+ * @brief calculate the average over the last n buffers. This is useful for
+ * smoothing out abrupt changes in the fft output.
  *
  * getReadSpan() runs the average
  */
 class SpectrumAnalyzerAverager
 {
 public:
-    explicit SpectrumAnalyzerAverager(int fftSize);
+    explicit SpectrumAnalyzerAverager(int fftSize, int averagerBufferCount = 5);
 
     void pushCurve(std::span<const float> fftCurve);
 
@@ -27,7 +28,7 @@ public:
 private:
     juce::AudioBuffer<float> m_outputBuffer;
     juce::AudioBuffer<float> m_averagerBuffer;
-    int m_averagerChannelIndex{ 1 };
+    int m_averagerChannelIndex{ 0 };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SpectrumAnalyzerAverager)
 };

@@ -2,10 +2,12 @@
 
 //-----------------------------------------------------------------------------
 
-vsa::SpectrumAnalyzerAverager::SpectrumAnalyzerAverager(int fftSize)
+vsa::SpectrumAnalyzerAverager::SpectrumAnalyzerAverager(int fftSize, int averagerBufferCount)
     : m_outputBuffer{ 1, fftSize / 2 }
-    , m_averagerBuffer{ 5, fftSize / 2 }
+    , m_averagerBuffer{ averagerBufferCount, fftSize / 2 }
 {
+    jassert(averagerBufferCount > 0);
+
     m_averagerBuffer.clear();
     m_outputBuffer.clear();
 }
