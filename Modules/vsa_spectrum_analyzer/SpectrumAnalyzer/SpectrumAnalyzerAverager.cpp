@@ -14,7 +14,7 @@ vsa::SpectrumAnalyzerAverager::SpectrumAnalyzerAverager(int fftSize, int average
 
 //-----------------------------------------------------------------------------
 
-void vsa::SpectrumAnalyzerAverager::pushCurve(std::span<const float> fftCurve)
+void vsa::SpectrumAnalyzerAverager::pushRawFftCurve(std::span<const float> fftCurve)
 {
     const float gain{ 1.0f / static_cast<float>(m_averagerBuffer.getNumSamples() * m_averagerBuffer.getNumChannels()) };
     m_averagerBuffer.copyFrom(m_averagerChannelIndex, 0, &fftCurve.front(), m_averagerBuffer.getNumSamples(), gain);

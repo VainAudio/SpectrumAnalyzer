@@ -19,7 +19,7 @@ void vsa::SpectrumAnalyzerCurve::pushCurve(std::span<const float> fftCurve)
 {
     std::lock_guard guard{ m_lock };
 
-    m_averager.pushCurve(fftCurve);
+    m_averager.pushRawFftCurve(fftCurve);
 }
 
 //-----------------------------------------------------------------------------

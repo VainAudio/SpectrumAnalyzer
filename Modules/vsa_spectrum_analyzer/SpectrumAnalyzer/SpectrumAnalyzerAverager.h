@@ -21,7 +21,7 @@ class SpectrumAnalyzerAverager
 public:
     explicit SpectrumAnalyzerAverager(int fftSize, int averagerBufferCount = 5);
 
-    void pushCurve(std::span<const float> fftCurve);
+    void pushRawFftCurve(std::span<const float> fftCurve);
 
     std::span<const float> getReadSpan();
 
