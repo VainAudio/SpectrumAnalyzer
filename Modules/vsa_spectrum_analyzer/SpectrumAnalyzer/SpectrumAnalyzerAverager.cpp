@@ -29,7 +29,7 @@ void vsa::SpectrumAnalyzerAverager::pushRawFftCurve(std::span<const float> fftCu
 
 std::span<const float> vsa::SpectrumAnalyzerAverager::getReadSpan()
 {
-    if (m_pushedSinceLastRead > 0)
+    if (hasUnreadData())
     {
         m_outputBuffer.clear();
 
@@ -45,6 +45,13 @@ std::span<const float> vsa::SpectrumAnalyzerAverager::getReadSpan()
     }
 
     return { m_outputBuffer.getReadPointer(0), static_cast<std::size_t>(m_outputBuffer.getNumSamples()) };
+}
+
+//-----------------------------------------------------------------------------
+
+bool vsa::SpectrumAnalyzerAverager::hasUnreadData() const
+{
+    return m_pushedSinceLastRead > 0;
 }
 
 //-----------------------------------------------------------------------------

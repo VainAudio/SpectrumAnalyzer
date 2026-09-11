@@ -26,6 +26,8 @@ public:
     std::span<const float> getReadSpan();
 
 private:
+    bool hasUnreadData() const;
+
     juce::AudioBuffer<float> m_outputBuffer;
     juce::AudioBuffer<float> m_averagerBuffer;
     int m_averagerChannelIndex{ 0 };
