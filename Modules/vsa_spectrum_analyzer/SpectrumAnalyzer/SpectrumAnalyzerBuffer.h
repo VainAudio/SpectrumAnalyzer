@@ -13,8 +13,8 @@ BEGIN_VSA_NAMESPACE
  * @class SpectrumAnalyzerBuffer
  * @brief double buffer for reading/writing
  *
- * write into a buffer, perform fft once the buffer is full lives in the editor
- * and receives new audio data from AudioBufferFifo
+ * write into a buffer, perform fft once the buffer is full. lives in the
+ * editor and receives new audio data from AudioBufferFifo.
  *
  * @see AudioBufferFifo
  */
@@ -28,11 +28,10 @@ public:
 
     using FftSpan = std::span<float>;
     FftSpan getFftSpan();
+    bool isFftSpanReady() const;
 
     void write(std::span<const float> data);
     void skip(int samples);
-
-    bool isFftSpanReady() const;
 
 private:
     std::size_t getWriteIndex() const;
