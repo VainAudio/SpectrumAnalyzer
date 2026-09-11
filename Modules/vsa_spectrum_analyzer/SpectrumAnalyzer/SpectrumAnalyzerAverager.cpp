@@ -21,21 +21,28 @@ void vsa::SpectrumAnalyzerAverager::pushRawFftCurve(std::span<const float> fftCu
 
     if (++m_averagerChannelIndex == m_averagerBuffer.getNumChannels())
         m_averagerChannelIndex = 0;
+
+    m_pushedSinceLastRead++;
 }
 
 //-----------------------------------------------------------------------------
 
 std::span<const float> vsa::SpectrumAnalyzerAverager::getReadSpan()
 {
-    m_outputBuffer.clear();
-
-    for (int c = 0; c < m_averagerBuffer.getNumChannels(); ++c)
+    if (m_pushedSinceLastRead > 0)
     {
-        m_outputBuffer.addFrom(0, 0, m_averagerBuffer, c, 0, m_averagerBuffer.getNumSamples(), 2.0f);
-    }
+        m_outputBuffer.clear();
 
-    juce::FloatVectorOperations::multiply(m_outputBuffer.getWritePointer(0), 1.0f / static_cast<float>(m_averagerBuffer.getNumChannels()),
-                                          m_outputBuffer.getNumSamples());
+        for (int c = 0; c < m_averagerBuffer.getNumChannels(); ++c)
+        {
+            m_outputBuffer.addFrom(0, 0, m_averagerBuffer, c, 0, m_averagerBuffer.getNumSamples(), 2.0f);
+        }
+
+        juce::FloatVectorOperations::multiply(m_outputBuffer.getWritePointer(0),
+                                              1.0f / static_cast<float>(m_averagerBuffer.getNumChannels()), m_outputBuffer.getNumSamples());
+
+        m_pushedSinceLastRead = 0;
+    }
 
     return { m_outputBuffer.getReadPointer(0), static_cast<std::size_t>(m_outputBuffer.getNumSamples()) };
 }

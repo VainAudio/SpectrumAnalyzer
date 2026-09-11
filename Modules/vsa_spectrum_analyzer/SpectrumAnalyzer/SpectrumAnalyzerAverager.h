@@ -29,6 +29,7 @@ private:
     juce::AudioBuffer<float> m_outputBuffer;
     juce::AudioBuffer<float> m_averagerBuffer;
     int m_averagerChannelIndex{ 0 };
+    int m_pushedSinceLastRead{ 0 };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SpectrumAnalyzerAverager)
 };
