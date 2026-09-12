@@ -33,7 +33,8 @@ private:
     void timerCallback() final;
 
     virtual float getPreSmoothingPathHeightMultiplier(float x);
-    virtual void paintAnalyzerCurve(juce::Graphics &g, const juce::Path &p);
+    virtual void strokeAnalyzerCurve(juce::Graphics &g, const juce::Path &p);
+    virtual void fillAnalyzerCurve(juce::Graphics &g, const juce::Path &p);
 
     SpectrumAnalyzer m_fft;
     juce::Path m_curvePath;

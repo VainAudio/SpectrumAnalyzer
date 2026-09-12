@@ -39,7 +39,14 @@ float vsa::SpectrumAnalyzerComponent::getPreSmoothingPathHeightMultiplier(float 
 
 //-----------------------------------------------------------------------------
 
-void vsa::SpectrumAnalyzerComponent::paintAnalyzerCurve(juce::Graphics &g, const juce::Path &p)
+void vsa::SpectrumAnalyzerComponent::strokeAnalyzerCurve(juce::Graphics &g, const juce::Path &p)
+{
+    juce::ignoreUnused(g, p);
+}
+
+//-----------------------------------------------------------------------------
+
+void vsa::SpectrumAnalyzerComponent::fillAnalyzerCurve(juce::Graphics &g, const juce::Path &p)
 {
     const auto gradient{ juce::ColourGradient::vertical(juce::Colours::red, 0.0f, juce::Colours::red.withAlpha(0.25f),
                                                         static_cast<float>(getHeight())) };
@@ -57,23 +64,31 @@ void vsa::SpectrumAnalyzerComponent::paint(juce::Graphics &g)
     const auto b{ getLocalBounds().toFloat() };
     const auto levels{ m_fft.getAnalyzerCurve() };
 
-    const auto bottomLeft{ b.getBottomLeft() };
-    m_curvePath.startNewSubPath(bottomLeft);
+    auto mapPoint = [this, b](const juce::Point<float> &p)
+    {
+        const float x{ juce::jmap(p.x, 0.0f, b.getWidth()) };
+        const float y{ juce::jmap(1.0f - (getPreSmoothingPathHeightMultiplier(x) * p.y), 0.0f, b.getHeight()) };
+
+        return juce::Point{ x, y };
+    };
+
+    m_curvePath.startNewSubPath(mapPoint(levels.front()));
 
     for (const auto &point : levels)
     {
-        const float x{ juce::jmap(point.x, 0.0f, b.getWidth()) };
-        const float y{ juce::jmap(1.0f - (getPreSmoothingPathHeightMultiplier(x) * point.y), 0.0f, b.getHeight()) };
-
-        m_curvePath.lineTo(juce::Point{ x, y });
+        m_curvePath.lineTo(mapPoint(point));
     }
 
-    m_curvePath = m_curvePath.createPathWithRoundedCorners(50.0f);
+    auto strokePath = m_curvePath.createPathWithRoundedCorners(50.0f);
 
-    const auto bottomRight{ b.getBottomRight() };
-    m_curvePath.lineTo(bottomRight);
+    strokeAnalyzerCurve(g, strokePath);
 
-    paintAnalyzerCurve(g, m_curvePath);
+    m_curvePath.swapWithPath(strokePath);
+    m_curvePath.lineTo(b.getBottomRight());
+    m_curvePath.lineTo(b.getBottomLeft());
+    m_curvePath.closeSubPath();
+
+    fillAnalyzerCurve(g, m_curvePath);
 }
 
 //-----------------------------------------------------------------------------
