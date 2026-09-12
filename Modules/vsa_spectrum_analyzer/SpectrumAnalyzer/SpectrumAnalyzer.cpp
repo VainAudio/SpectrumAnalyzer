@@ -62,6 +62,7 @@ int vsa::SpectrumAnalyzer::useTimeSlice()
 }
 
 //-----------------------------------------------------------------------------
+
 bool vsa::SpectrumAnalyzer::populateConduitBuffer()
 {
     if (m_audioFifoFloat && m_audioFifoFloat->getAvailableSamples() > 0)
