@@ -38,7 +38,6 @@ private:
 
     SpectrumAnalyzer m_fft;
     juce::Path m_curvePath;
-    const juce::Colour m_colour{ juce::Colours::red };
 };
 
 //-----------------------------------------------------------------------------
